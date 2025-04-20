@@ -1,5 +1,16 @@
 import SwiftUI
-
+struct FlagView: ViewModifier{
+    func body(content: Content) -> some View { //шаблон стиля флага
+        content
+        .clipShape(.capsule)  // Закругляем изображение
+        .shadow(radius: 5)   // Добавляем тень
+    }
+}
+extension View{
+    func FlagStyle() -> some View{
+        modifier(FlagView())
+    }
+}
 struct ContentView: View {
     // Массив стран, флаги которых будут выбраны случайным образом для игры
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
@@ -52,13 +63,12 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)  // Когда флаг выбран, вызываем функцию flagTapped
                         } label: {
-                            // Изображение флага, с закруглёнными углами и тенями
                             Image(countries[number])
-                                .clipShape(.capsule)  // Закругляем изображение
-                                .shadow(radius: 5)   // Добавляем тень
+                                .FlagStyle()
                         }
                     }
                 }
+                
                 .frame(maxWidth: .infinity)  // Растягиваем весь блок по ширине
                 .padding(.vertical, 20)     // Добавляем вертикальные отступы
                 .background(.regularMaterial)  // Используем полупрозрачный фон
